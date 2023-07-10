@@ -14,6 +14,7 @@ import java.util.Map;
 import magma.agent.IMagmaConstants;
 import magma.agent.decision.decisionmaker.impl.GoalieDecisionMaker;
 import magma.agent.decision.decisionmaker.impl.SoccerDecisionMaker;
+import magma.agent.decision.decisionmaker.impl.SoccerGoalieDecisionMaker;
 import magma.agent.decision.decisionmaker.impl.challenge.GazeboRunChallengeDecisionMaker;
 import magma.agent.decision.decisionmaker.impl.challenge.KeepAwayChallengeDecisionMaker;
 import magma.agent.decision.decisionmaker.impl.challenge.KickChallengeDecisionMaker;
@@ -43,7 +44,7 @@ public class DecisionMakerConfigurationHelper
 		nao.put(IMagmaConstants.DEFAULT_DECISION_MAKER, null);
 		nao.put("DoNothing", DoNothingDecisionMaker::new);
 		nao.put("Goalie", GoalieDecisionMaker::new);
-		nao.put("Soccer", SoccerDecisionMaker::new);
+		nao.put("Soccer", SoccerGoalieDecisionMaker::new);
 		nao.put("Simple", SimpleDecisionMaker::new);
 		nao.put("Training", TrainingDecisionMaker::new);
 		nao.put("Training2", TrainingDecisionMaker2::new);

@@ -17,19 +17,27 @@ public class OpponentKickOffFormation extends Formation
 
 	public OpponentKickOffFormation(IRoboCupThoughtModel thoughtModel)
 	{
+
+		//TODO: Blocking the Ball or something special?
+
+
 		this.thoughtModel = thoughtModel;
 
-		poses.put(1, new Pose2D(-14.5, 0));
-		poses.put(2, new Pose2D(-11.4, 0));
-		poses.put(3, new Pose2D(-11, -7));
-		poses.put(4, new Pose2D(-0.5, -6));
-		poses.put(5, new Pose2D(-0.5, 6));
-		poses.put(6, new Pose2D(-4, -1.3));
-		poses.put(7, new Pose2D(-2.25, 0));
-		poses.put(8, new Pose2D(-0.3, 3));
-		poses.put(9, new Pose2D(-0.3, -3));
-		poses.put(10, new Pose2D(-4, 1.5));
-		poses.put(11, new Pose2D(-11, 7));
+		poses.put(1, new Pose2D(-11.4, 0));
+
+		poses.put(2, new Pose2D(-10, 4));
+		poses.put(3, new Pose2D(-10, -4));
+
+		poses.put(4, new Pose2D(-7, 2));
+		poses.put(5, new Pose2D(-7, -2));
+		poses.put(6, new Pose2D(-5, 3));
+		poses.put(7, new Pose2D(-5, -3));
+
+		poses.put(8, new Pose2D(-2, 4));
+		poses.put(9, new Pose2D(-2, -4));
+
+		poses.put(10, new Pose2D(-0.3, 2));
+		poses.put(11, new Pose2D(-0.3, -2));
 	}
 
 	@Override

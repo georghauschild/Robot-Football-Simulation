@@ -20,7 +20,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
  *
  * @author Stephan Kammerer
  */
-public abstract class Role implements IRole
+public abstract class Hof_Role implements IRole
 {
 	private static final float SAFETY_DISTANCE = 0.3f;
 
@@ -49,28 +49,36 @@ public abstract class Role implements IRole
 	/** Maximal x-position where this role moves */
 	protected final double maxX;
 
+	protected final Vector3D offset;
+
+
+
 	/**
-	 * @param name name of role
+	 * @param name     name of role
 	 * @param priority Our priority of role
-	 * @param minX Minimal x-position where this agent moves
-	 * @param maxX Maximal x-position where this agent moves
+	 * @param minX     Minimal x-position where this agent moves
+	 * @param maxX     Maximal x-position where this agent moves
+	 * @param offset   Maximal offset
 	 */
-	public Role(IRoboCupWorldModel worldModel, String name, float priority, double minX, double maxX)
+
+	public Hof_Role(IRoboCupWorldModel worldModel, String name, float priority, double minX, double maxX, Vector3D offset)
 	{
-		this(worldModel, name, priority, minX, maxX, 0);
+		this(worldModel, name, priority, minX, maxX, 0, offset);
 	}
 
-	public Role(IRoboCupWorldModel worldModel, String name, float priority, double minX, double maxX,
-			float safetyDistanceOffset)
+	public Hof_Role(IRoboCupWorldModel worldModel, String name, float priority, double minX, double maxX,
+                    float safetyDistanceOffset, Vector3D offset)
 	{
 		this.worldModel = worldModel;
 		this.name = name;
 		this.basePriority = priority;
+		this.offset = offset;
 		this.targetPose = new Pose2D();
 		this.minX = minX;
 		this.maxX = maxX;
 		this.safetyDistanceOffset = safetyDistanceOffset;
 	}
+
 
 	@Override
 	public String getName()
@@ -126,9 +134,34 @@ public abstract class Role implements IRole
 	 * @param targetX the target x-position
 	 * @return the limited target x-position
 	 */
-	protected double keepXLimits(double targetX)
+	public double keepXLimits(double targetX)
 	{
 		return ValueUtil.limitValue(targetX, minX, maxX);
+	}
+
+	public Vector3D getNewPositionWithOffsetAndLimits(){
+		Vector3D playerPosition = worldModel.getThisPlayer().getPosition();
+		Vector3D ballPosition = worldModel.getBall().getPosition();
+		Vector3D enemyGoalPosition = worldModel.getOtherGoalPosition();
+		Vector3D ownGoalPosition = worldModel.getOwnGoalPosition();
+		Vector3D targetPosition = ballPosition.add(offset);
+		Vector3D targetPosition2 = targetPosition;
+
+		//		if (targetPosition2.getX() < minX){
+		//			targetPosition = new Vector3D(minX, targetPosition2.getY(), targetPosition2.getZ());
+		//		}
+		//		if (targetPosition2.getX() > maxX){
+		//			targetPosition = new Vector3D(maxX, targetPosition2.getY(), targetPosition2.getZ());
+		//		}
+
+		if (playerPosition.getX() >= enemyGoalPosition.getX()){
+			targetPosition = new Vector3D(targetPosition2.getX()-3,targetPosition2.getY(),0);
+		}
+		if (playerPosition.getX() <= ownGoalPosition.getX()){
+			targetPosition = new Vector3D(targetPosition2.getX()+3,targetPosition2.getY(),0);
+		}
+
+		return targetPosition;
 	}
 
 	protected IPose2D avoidGoal(IPose2D target)
@@ -173,5 +206,17 @@ public abstract class Role implements IRole
 	public String toString()
 	{
 		return name + " " + priority;
+	}
+
+	public Vector3D getOffset(){
+		return offset;
+	}
+
+	public double getMinX() {
+		return minX;
+	}
+
+	public double getMaxX() {
+		return minX;
 	}
 }

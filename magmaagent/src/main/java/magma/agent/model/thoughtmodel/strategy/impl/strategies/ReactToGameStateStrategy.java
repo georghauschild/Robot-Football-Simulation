@@ -31,7 +31,7 @@ public class ReactToGameStateStrategy extends BaseStrategy
 				new OpenSpaceSeeker(new BallAcceptor("BallAcceptor", worldModel, 6.0f, 6.0f, 8f), thoughtModel));
 
 		// defender
-		Role defender = new Defender("Defender", worldModel, 7.0f);
+		Role defender = new Defender("Defender", worldModel, 7.0f, FieldArea.LOWER);
 
 		// defensive midfielder
 		Role defensiveMidfielder = new DefensiveMidfielder("DefensiveMidfielder", worldModel, 1.5f, 6.0f);

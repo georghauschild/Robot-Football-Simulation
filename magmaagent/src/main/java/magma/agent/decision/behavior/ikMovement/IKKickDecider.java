@@ -50,17 +50,8 @@ public class IKKickDecider extends KickDecider
 			return -1;
 		}
 
-		final int MIN_ANGLE = 5;
 		final int MAX_ANGLE = 45;
 		boolean isKickingFootLeft = getKickingFoot() == SupportFoot.LEFT;
-		int maxAngle = isKickingFootLeft ? MIN_ANGLE : MAX_ANGLE;
-		int minAngle = isKickingFootLeft ? -MAX_ANGLE : -MIN_ANGLE;
-
-		if (targetPose.getAngle().degrees() > maxAngle || targetPose.getAngle().degrees() < minAngle) {
-			// If the turn degrees are outside the allowed range, we can't reach
-			// the preferred position exactly so we can't kick here
-			return -1;
-		}
 
 		// Create a polygon describing the area of reachable positions based on
 		// the intended turn angle

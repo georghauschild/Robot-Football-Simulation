@@ -13,6 +13,9 @@ import magma.agent.decision.behavior.base.KeepEstimator;
 import magma.agent.model.thoughtmodel.IRoboCupThoughtModel;
 import magma.agent.model.worldmodel.IRoboCupWorldModel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class GoalieDecisionMaker extends SoccerDecisionMaker
 {
 	private transient KeepEstimator keepEstimator;
@@ -21,6 +24,9 @@ public class GoalieDecisionMaker extends SoccerDecisionMaker
 	{
 		super(behaviors, thoughtModel);
 		keepEstimator = new KeepEstimator(thoughtModel);
+
+		// Füge ein neues Item zur behaviorSuppliers-Liste hinzu
+		behaviorSuppliers.add(this::goalieSpecificBehavior);
 	}
 
 	@Override
@@ -31,6 +37,9 @@ public class GoalieDecisionMaker extends SoccerDecisionMaker
 		return null;
 	}
 
+	protected String goalieSpecificBehavior(){
+		return IBehaviorConstants.CELEBRATE;
+	};
 	@Override
 	protected String move()
 	{
@@ -44,7 +53,11 @@ public class GoalieDecisionMaker extends SoccerDecisionMaker
 			return keepBehavior;
 		}
 
-		if (getWorldModel().isBallInCriticalArea() && getThoughtModel().isClosestToBall()) {
+	//	if (getWorldModel().isBallInCriticalArea() && getThoughtModel().isClosestToBall()) {
+	//		return IBehaviorConstants.ATTACK;
+	//	}
+
+		if (getWorldModel().isBallInCriticalArea()) {
 			return IBehaviorConstants.ATTACK;
 		}
 

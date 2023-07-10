@@ -36,8 +36,9 @@ public class GetUpFromBack extends MovementBehavior implements INaoJoints
 		getUp.add(new MovementPhase("phase1", 50, true)
 						  .add(NeckPitch, 0, 7f)
 						  .add(NeckYaw, 0, 7f)
-						  .add(LShoulderPitch, -90, 7f)
-						  .add(LShoulderYaw, 0, 7f)
+
+				          .add(LShoulderPitch, -90, 7f)
+						  .add(LShoulderYaw, -90, 7f)
 						  .add(LArmYaw, 0, 7f)
 						  .add(LArmRoll, 0, 7f)
 
@@ -49,7 +50,7 @@ public class GetUpFromBack extends MovementBehavior implements INaoJoints
 						  .add(LFootRoll, 0, 7f)
 
 						  .add(RShoulderPitch, -90, 7f)
-						  .add(RShoulderYaw, 0, 7f)
+						  .add(RShoulderYaw, 90, 7f)
 						  .add(RArmYaw, 0, 7f)
 						  .add(RArmRoll, 0, 7f)
 
@@ -71,35 +72,35 @@ public class GetUpFromBack extends MovementBehavior implements INaoJoints
 						  .add(RHipPitch, param.getHipPitch(), 7f));
 
 		getUp.add(new MovementPhase("phase3", param.getTime3())
-						  .add(LShoulderPitch, 0, 7f)
+						  .add(LShoulderPitch, -40, 7f)
 						  .add(LHipYawPitch, param.getHipYawPitch(), 7f)
 						  .add(LHipPitch, param.getHipPitch(), param.getHipPitchSpeed())
 						  .add(LHipRoll, param.getHipRoll(), 7f)
 						  .add(LKneePitch, param.getKneePitch(), 7f)
 						  .add(LFootPitch, param.getFootPitch(), param.getFootPitchSpeed())
 
-						  .add(RShoulderPitch, 0, 7f)
-						  .add(RHipYawPitch, param.getHipYawPitch(), 7f)
-						  .add(RHipPitch, param.getHipPitch(), param.getHipPitchSpeed())
-						  .add(RHipRoll, -param.getHipRoll(), 7f)
-						  .add(RKneePitch, param.getKneePitch(), 7f)
-						  .add(RFootPitch, param.getFootPitch(), param.getFootPitchSpeed()));
+						 .add(RShoulderPitch, -40, 7f)
+						 .add(RHipYawPitch, param.getHipYawPitch(), 7f)
+						 .add(RHipPitch, param.getHipPitch(), param.getHipPitchSpeed())
+						 .add(RHipRoll, -param.getHipRoll(), 7f)
+						 .add(RKneePitch, param.getKneePitch(), 7f)
+						 .add(RFootPitch, param.getFootPitch(), param.getFootPitchSpeed()));
 
 		getUp.add(new MovementPhase("phase4", param.getTime4())
-						  .add(LShoulderPitch, 0, 7f)
+						  .add(LShoulderPitch, 40, 7f)
 						  .add(LHipYawPitch, 0, 7f)
-						  .add(LHipPitch, 35, 7f)
+						  .add(LHipPitch, 70, 7f)
 						  .add(LHipRoll, 0, 7f)
-						  .add(LKneePitch, -70, 7f)
+						  .add(LKneePitch, -90, 7f)
 						  .add(LFootPitch, 35, 5)
 
-						  .add(RShoulderPitch, 0, 7f)
+						  .add(RShoulderPitch, 40, 7f)
 						  .add(RHipYawPitch, 0, 7f)
-						  .add(RHipPitch, 35, 7f)
+						  .add(RHipPitch, 70, 7f)
 						  .add(RHipRoll, 0, 7f)
-						  .add(RKneePitch, -70, 7f)
+						  .add(RKneePitch, -90, 7f)
 
-						  .add(RFootPitch, 35, 5));
+						 .add(RFootPitch, 35, 5));
 		return getUp;
 	}
 

@@ -17,6 +17,8 @@ public class AllrounderStrategy extends BaseStrategy
 
 	public AllrounderStrategy(IRoboCupThoughtModel thoughtModel)
 	{
+
+		//Abändern?
 		super(NAME, thoughtModel);
 
 		// defender

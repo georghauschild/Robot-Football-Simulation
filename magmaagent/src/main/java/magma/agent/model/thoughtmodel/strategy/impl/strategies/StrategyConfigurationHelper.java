@@ -13,7 +13,7 @@ import magma.agent.model.thoughtmodel.strategy.ITeamStrategy;
 
 public class StrategyConfigurationHelper
 {
-	public static final String DEFAULT_STRATEGY = ReactToGameStateStrategy.NAME;
+	public static final String DEFAULT_STRATEGY = HofStrategy.NAME;     //Funktionert das?
 
 	@FunctionalInterface
 	public interface StrategyConstructor {
@@ -25,9 +25,7 @@ public class StrategyConfigurationHelper
 	static
 	{
 		Map<String, StrategyConstructor> strategies = new LinkedHashMap<>();
-		strategies.put(ReactToGameStateStrategy.NAME, ReactToGameStateStrategy::new);
-		strategies.put(KeepAwayChallengeStrategy.NAME, KeepAwayChallengeStrategy::new);
-		strategies.put(AllrounderStrategy.NAME, AllrounderStrategy::new);
+		strategies.put(HofStrategy.NAME, HofStrategy::new);
 		STRATEGIES = Collections.unmodifiableMap(strategies);
 	}
 }

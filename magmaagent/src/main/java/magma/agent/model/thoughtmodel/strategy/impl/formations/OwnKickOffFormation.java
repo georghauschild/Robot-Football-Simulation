@@ -12,6 +12,9 @@ public class OwnKickOffFormation extends Formation
 {
 	public OwnKickOffFormation()
 	{
+
+		//TODO: Easier Kickoff -> Standing in the middle
+
 		// Kick off formation to opponent half
 		//		poses.put(1, new Pose2D(-14.5, 0));
 		//		poses.put(2, new Pose2D(-11.4, 0));
@@ -25,17 +28,21 @@ public class OwnKickOffFormation extends Formation
 		//		poses.put(10, new Pose2D(-4.75, 1.5));
 		//		poses.put(11, new Pose2D(-6, 6));
 
-		// Kick off formation to own half
-		poses.put(1, new Pose2D(-14.5, 0));
-		poses.put(2, new Pose2D(-11.4, -1));
-		poses.put(3, new Pose2D(-7, -6));
-		poses.put(4, new Pose2D(-9, -3.5));
-		poses.put(5, new Pose2D(-11, -6));
-		poses.put(6, new Pose2D(-4.25, -3.25));
-		poses.put(7, new Pose2D(-0.5, -6));
-		poses.put(8, new Pose2D(-0.3, 1.0, Angle.deg(-35)));
-		poses.put(9, new Pose2D(-0.8, 1.5));
-		poses.put(10, new Pose2D(-4.75, 1.5));
-		poses.put(11, new Pose2D(-6, 6));
+		// Changed to fit other kickoff logic
+		poses.put(1, new Pose2D(-10, 0));
+
+		poses.put(2, new Pose2D(-8.5, 2));
+		poses.put(3, new Pose2D(-8.5, -2));
+
+		poses.put(4, new Pose2D(-6, 4.5));
+		poses.put(5, new Pose2D(-6, 1.5));
+		poses.put(6, new Pose2D(-6, -1.5));
+		poses.put(7, new Pose2D(-6, -4.5));
+
+		poses.put(8, new Pose2D(-3, 5.5));
+		poses.put(9, new Pose2D(-3, -5.5));
+
+		poses.put(10, new Pose2D(-1.75, 1));
+		poses.put(11, new Pose2D(-1.75, -1));
 	}
 }

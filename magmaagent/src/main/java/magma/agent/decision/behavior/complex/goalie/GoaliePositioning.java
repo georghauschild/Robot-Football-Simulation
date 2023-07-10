@@ -8,14 +8,13 @@ package magma.agent.decision.behavior.complex.goalie;
 import hso.autonomy.agent.decision.behavior.BehaviorMap;
 import hso.autonomy.agent.decision.behavior.IBehavior;
 import hso.autonomy.agent.model.thoughtmodel.IThoughtModel;
-import hso.autonomy.util.geometry.Angle;
-import hso.autonomy.util.geometry.Geometry;
-import hso.autonomy.util.geometry.Pose2D;
-import hso.autonomy.util.geometry.PoseSpeed2D;
+import hso.autonomy.util.geometry.*;
+import hso.autonomy.util.misc.ValueUtil;
 import magma.agent.decision.behavior.IBehaviorConstants;
 import magma.agent.decision.behavior.base.KeepEstimator;
 import magma.agent.decision.behavior.complex.RoboCupSingleComplexBehavior;
 import magma.agent.decision.behavior.complex.walk.WalkToPosition;
+import magma.agent.decision.behavior.ikMovement.walk.IKDynamicWalkMovement;
 import magma.agent.model.worldmodel.IRoboCupWorldModel;
 import magma.agent.model.worldmodel.IThisPlayer;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -38,53 +37,40 @@ public class GoaliePositioning extends RoboCupSingleComplexBehavior
 		keepEstimator = new KeepEstimator(thoughtModel);
 		cycles = 0;
 	}
+	//find position between goal und ball
+	public static Vector2D findMidpoint(Vector2D p1, Vector2D p2) {
+		double xMidpoint = (p1.getX() + p2.getX()) / 2;
+		double yMidpoint = (p1.getY() + p2.getY()) / 2;
+
+		return new Vector2D(xMidpoint, yMidpoint);
+	}
+
 
 	@Override
 	public IBehavior decideNextBasicBehavior()
 	{
-		IRoboCupWorldModel worldModel = getWorldModel();
-		Vector3D ownGoal = worldModel.getOwnGoalPosition();
-		IThisPlayer thisPlayer = worldModel.getThisPlayer();
+	 IRoboCupWorldModel worldModel = getWorldModel();
+	 IThisPlayer thisPlayer = worldModel.getThisPlayer();
+	 Vector3D goalPosition3D = worldModel.getOwnGoalPosition();
+	 Vector3D ballPosition3D = worldModel.getBall().getPosition();
 
-		Vector3D ball = worldModel.getBall().getPosition();
-		boolean isPossibleGoal = keepEstimator.isPossibleGoal();
+	 // get goal position in 2D and a little bid in front of goal
+	 double x = goalPosition3D.getX() + 0.3;
+	 double y = goalPosition3D.getY();
+	 Vector2D goalPosition = new Vector2D(x, y);
 
-		if (isPossibleGoal) {
-			Vector3D[] futureBallPositions =
-					worldModel.getBall().getFuturePositions(getThoughtModel().getAgentModel().getGoalPredictionTime());
-			for (Vector3D position : futureBallPositions) {
-				float length = worldModel.fieldHalfLength();
-				if (position.getX() >= -length + 0.3 && position.getX() <= -length + 0.6) {
-					ball = position;
-					break;
-				}
-			}
-		}
+	// get ball position in 2D
+	x = ballPosition3D.getX();
+	y = ballPosition3D.getY();
+	Vector2D ballPosition = new Vector2D(x, y);
 
-		double distance = worldModel.goalHalfWidth() - 0.3;
+	Vector2D newPosition = findMidpoint(goalPosition, ballPosition);
 
-		Pose2D result = Geometry.getPointInterpolation(ownGoal, ball, distance);
+	 WalkToPosition walkToPosition = (WalkToPosition) behaviors.get(IBehaviorConstants.WALK_TO_POSITION);
+		Pose2D newPose = new Pose2D(newPosition);
+		 return walkToPosition.setPosition(
+				 new PoseSpeed2D(newPose, Vector2D.ZERO), 90, true, true, 0.8, IKDynamicWalkMovement.NAME_LOW_ACC);
+		 // return behaviors.get(IBehaviorConstants.CELEBRATE);
 
-		float fieldHalfLength = worldModel.fieldHalfLength();
-		double xOffsetFromGoal = 0.2;
-
-		result.x = (result.getX() + fieldHalfLength) * 0.5 - fieldHalfLength + xOffsetFromGoal;
-
-		Angle directionToBall = thisPlayer.getBodyDirectionTo(ball);
-
-		if (thisPlayer.getPosition().distance(new Vector3D(result.x, result.y, 0)) < 0.4 &&
-				Math.abs(directionToBall.degrees()) < 5) {
-			cycles++;
-		} else {
-			cycles = 0;
-		}
-
-		if (cycles > CYCLES_BEFORE_STAND_STILL) {
-			return behaviors.get(IBehaviorConstants.GET_READY);
-		}
-
-		double slowDownDistance = isPossibleGoal ? 0.2 : 0.8;
-		WalkToPosition walkToPosition = (WalkToPosition) behaviors.get(IBehaviorConstants.WALK_TO_POSITION);
-		return walkToPosition.setPosition(new PoseSpeed2D(result, Vector2D.ZERO), 90, true, slowDownDistance);
 	}
 }

@@ -20,7 +20,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
  */
 public class Defender extends Role
 {
-	public Defender(String name, IRoboCupWorldModel worldModel, float priority)
+	public Defender(String name, IRoboCupWorldModel worldModel, float priority, FieldArea fieldArea)
 	{
 		super(worldModel, name, priority,			//
 				-worldModel.fieldHalfLength(),		// minX

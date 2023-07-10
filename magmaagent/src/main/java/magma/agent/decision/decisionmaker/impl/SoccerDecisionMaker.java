@@ -45,6 +45,8 @@ public class SoccerDecisionMaker extends RoboCupDecisionMakerBase
 		calibrated = false;
 	}
 
+
+
 	@Override
 	public String decideNextBehavior()
 	{
@@ -135,9 +137,9 @@ public class SoccerDecisionMaker extends RoboCupDecisionMakerBase
 
 	protected String sendPassCommand()
 	{
-		if (getThoughtModel().shouldActivatePassMode()) {
-			behaviors.get(IBehaviorConstants.SEND_PASS_COMMAND).perform();
-		}
+		//if (getThoughtModel().shouldActivatePassMode()) {
+		//	behaviors.get(IBehaviorConstants.SEND_PASS_COMMAND).perform();
+		//}
 		return null;
 	}
 
@@ -158,7 +160,7 @@ public class SoccerDecisionMaker extends RoboCupDecisionMakerBase
 	{
 		IRoboCupWorldModel worldModel = getWorldModel();
 		if (worldModel.getGameState() == GameState.OWN_GOAL) {
-			return IBehaviorConstants.CELEBRATE;
+			return IBehaviorConstants.GRIEVE;
 		}
 
 		if (worldModel.getGameState() == GameState.OPPONENT_GOAL) {
@@ -170,7 +172,7 @@ public class SoccerDecisionMaker extends RoboCupDecisionMakerBase
 			int opponentGoals = worldModel.getGoalsTheyScored();
 
 			if (ourGoals > opponentGoals) {
-				return IBehaviorConstants.CELEBRATE;
+				return IBehaviorConstants.GRIEVE;
 			} else if (opponentGoals > ourGoals) {
 				return IBehaviorConstants.GRIEVE;
 			}
@@ -286,7 +288,6 @@ public class SoccerDecisionMaker extends RoboCupDecisionMakerBase
 			// do not position until kick off
 			return IBehaviorConstants.GET_READY;
 		}
-
 		return IBehaviorConstants.PASSIVE_POSITIONING;
 	}
 	protected boolean isMyTurnInPenalties()

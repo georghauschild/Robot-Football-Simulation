@@ -33,7 +33,7 @@ public class SoccerGoalieDecisionMaker implements IDecisionMaker
 	public boolean decide()
 	{
 		if (thoughtModel.shouldReplaceGoalie()) {
-			decisionMaker = goalieDecisionMaker;
+			decisionMaker = soccerDecisionMaker;
 		} else {
 			decisionMaker = soccerDecisionMaker;
 		}

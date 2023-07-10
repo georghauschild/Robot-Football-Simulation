@@ -22,6 +22,8 @@ public interface IBehaviorConstants {
 
 	String MOVE_ZERO = "MoveZero";
 
+	String MOVE_HOFGOALKEEPER = "MoveHofGoalkeeper";
+
 	// Say behaviors
 	String SAY_POSITIONS = "SayPositions";
 
