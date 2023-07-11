@@ -66,6 +66,10 @@ public class GoaliePositioning extends RoboCupSingleComplexBehavior
 
 	Vector2D newPosition = findMidpoint(goalPosition, ballPosition);
 
+		if (!worldModel.getMap().getFieldArea().contains(newPosition)){
+			newPosition = new Vector2D(goalPosition3D.getX(),goalPosition3D.getY()+1);
+		}
+
 	 WalkToPosition walkToPosition = (WalkToPosition) behaviors.get(IBehaviorConstants.WALK_TO_POSITION);
 		Pose2D newPose = new Pose2D(newPosition);
 		 return walkToPosition.setPosition(

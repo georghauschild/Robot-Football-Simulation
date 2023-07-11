@@ -154,11 +154,15 @@ public abstract class Hof_Role implements IRole
 		//			targetPosition = new Vector3D(maxX, targetPosition2.getY(), targetPosition2.getZ());
 		//		}
 
-		if (playerPosition.getX() >= enemyGoalPosition.getX()){
-			targetPosition = new Vector3D(targetPosition2.getX()-3,targetPosition2.getY(),0);
-		}
-		if (playerPosition.getX() <= ownGoalPosition.getX()){
-			targetPosition = new Vector3D(targetPosition2.getX()+3,targetPosition2.getY(),0);
+	//	if (targetPosition.getX() >= enemyGoalPosition.getX()){
+	//		targetPosition = new Vector3D(ballPosition.getX(),targetPosition2.getY(),0);
+	//	}
+	//	if (targetPosition.getX() <= ownGoalPosition.getX()){
+	//		targetPosition = new Vector3D(ballPosition.getX(),targetPosition2.getY(),0);
+	//	}
+
+		if (!worldModel.getMap().getFieldArea().contains(targetPosition)){
+			targetPosition = new Vector3D(ballPosition.getX(),ballPosition.getY(),0);
 		}
 
 		return targetPosition;
