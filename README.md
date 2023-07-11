@@ -11,6 +11,8 @@ The chosen point on the line should be close to the goal to ensure its protectio
 ## Responsive Formation
 The dynamically adapting formation, which is based on the concept of "shifting", is a tactic commonly used in professional football. Shifting refers to the movement of individual players as well as the collective unit with the aim of either reducing space around the ball or closing gaps in the defensive line. The concept of shifting formation revolves around the idea of maintaining a compact defensive structure while simultaneously preventing the opposition from exploiting any weaknesses. This is achieved by constantly adjusting the position of the players in relation to the position of the ball to ensure optimal coverage of key areas on the pitch.  
 > "Shifting is the movement of the individual as well as the collective, which has the aim of either reducing the space to the ball or closing holes in one's own defensive formation." -[spielverlagerung.de](https://spielverlagerung.de/verschieben/) (translated)
+
+### Simplified Implementation Process
 The following simplified process outlines the approximate sequence of position calculation. The detailed process can be found in the code.
 
 During the initialization of the players, each one is assigned an individual offset. This offset describes the formation position that each player should take relative to the ball. For example, the left sided defender should always be positioned significantly behind the ball and a little bid left of it during the match.   
