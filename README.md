@@ -38,13 +38,8 @@ Vector3D targetPosition = ballPosition.add(offset);
 
 Afterwards, it will be checked whether the target position is still within the two goals.
 ```
-Vector3D targetPosition2 = targetPosition;
-
-if (targetPosition.getX() >= enemyGoalPosition.getX()){
-			targetPosition = new Vector3D(targetPosition2.getX()-3,targetPosition2.getY(),0);
-}
-if (targetPosition.getX() <= ownGoalPosition.getX()){
-			targetPosition = new Vector3D(targetPosition2.getX()+3,targetPosition2.getY(),0);
+if (!worldModel.getMap().getFieldArea().contains(targetPosition)){
+	targetPosition = new Vector3D(ballPosition.getX(),ballPosition.getY(),0);
 }
 ```
 
@@ -63,4 +58,10 @@ protected transient List<Supplier<String>> behaviorSuppliers =
         this::sendPassCommand, this::getUp, this::reactToGameEnd, this::performFocusBall, this::getReady,
         this::waitForGameStart, this::waitForOpponentActions, this::searchBall, this::move));
 ```
+
+### Potential for improvement
+- Adjust view direction for movement (Z-value of Vector3D)
+- New formation guidelines for changed game state or dangerous situations
+- Introduce player communication for formation positioning
+
 ![RoboCupLogo](https://github.com/georghauschild/Robot-Football-Simulation/assets/37111215/e825a8ce-2fa1-4eed-993f-b30c3988bbf4)
