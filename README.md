@@ -64,4 +64,12 @@ protected transient List<Supplier<String>> behaviorSuppliers =
 - New formation guidelines for changed game state or dangerous situations
 - Introduce player communication for formation positioning
 
+## Demonstration
+The video illustrates how the robots strive to maintain their formation, regardless of where the ball is located.
+- speed 2x
+- reduced enemy players
+
+https://github.com/georghauschild/Robot-Football-Simulation/assets/37111215/39e502b1-4eeb-4310-a2c0-d39a46b64345
+
+
 ![RoboCupLogo](https://github.com/georghauschild/Robot-Football-Simulation/assets/37111215/e825a8ce-2fa1-4eed-993f-b30c3988bbf4)
