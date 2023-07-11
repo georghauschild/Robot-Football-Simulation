@@ -7,5 +7,27 @@ This project is an extension of the original project by [Magma Offenburg](https:
 The goalkeeper role has been specifically designed to guard the goalpost. Our implementation features strategies to maximize coverage of the goalpost.
 One of the primary responsibilities of a goalkeeper is to position themselves correctly in relation to the game ball and their own goal. By doing so, they create a defensive barrier that makes it difficult for the opposing team to score. This positioning is determined by calculating a line between the ball and our goal, and then selecting a point on this line where the goalkeeper should stand.  
 The chosen point on the line should be close to the goal to ensure its protection. However, it is also important that the point is not too close to the goal, as this could lead to collisions between the goalkeeper and the goal structure. Such collisions can result in falling over and get stuck and will compromise the goalkeeper's ability to defend the goal effectively.
-![RoboCupLogo](https://github.com/georghauschild/Robot-Football-Simulation/assets/37111215/e825a8ce-2fa1-4eed-993f-b30c3988bbf4)
 
+## Responsive Formation
+The dynamically adapting formation, which is based on the concept of "shifting", is a tactic commonly used in professional football. Shifting refers to the movement of individual players as well as the collective unit with the aim of either reducing space around the ball or closing gaps in the defensive line. The concept of shifting formation revolves around the idea of maintaining a compact defensive structure while simultaneously preventing the opposition from exploiting any weaknesses. This is achieved by constantly adjusting the position of the players in relation to the position of the ball to ensure optimal coverage of key areas on the pitch.  
+> "Shifting is the movement of the individual as well as the collective, which has the aim of either reducing the space to the ball or closing holes in one's own defensive formation." -[spielverlagerung.de](https://spielverlagerung.de/verschieben/) (translated)
+During the initialization of the players, each one is assigned an individual offset. This offset describes the formation position that each player should take relative to the ball. For example, the left sided defender should always be positioned significantly behind the ball and a little bid left of it during the match.  
+```
+Vector3D offsetLeftDefender = new Vector3D(-5, 2, 0);
+// -5 units on x-axis for staying behind the ball
+// 2 units on y-axis for staying left of the ball
+```
+On the other hand, the striker should generally position themselves in front of the ball to take an offensive position.  
+```
+Vector3D offsetRightAttacker = new Vector3D(4, -2.5, 0);
+// 4 units on x-axis for staying in front of the ball
+// -2.5 units on y-axis for staying right of the ball
+```
+The actual position on the playing field is calculated as follows: Ball position + Offset.  
+This means that the player moves towards the ball position, which is modified individually by the offset.
+```
+Vector3D ballPosition = worldModel.getBall().getPosition()
+Vector3D targetPosition = ballPosition.add(offset);
+```
+
+![RoboCupLogo](https://github.com/georghauschild/Robot-Football-Simulation/assets/37111215/e825a8ce-2fa1-4eed-993f-b30c3988bbf4)
