@@ -1,130 +1,66 @@
-# magmaOffenburg RoboCup 3D simulation code
+# Robot-Football-Simulation
+![RoboCupFullBanner](https://github.com/georghauschild/Robot-Football-Simulation/assets/37111215/25c9135b-c01b-40ba-8d2c-471205c532f7)
+This project is forked from [magmaoffenburg base code](https://github.com/magmaOffenburg/magmaRelease). It represents a semester project for a Robotics course, with my primary focus on creating dynamic, responsive formations for a soccer robot game. The project serves as an introduction to robotics and the functions described in the readme file reflect only my contribution to the group project.
+This project is an extension of the original project by [Magma Offenburg](https://github.com/magmaOffenburg/magmaRelease) and represents a semester-long effort within a robotics course. My main goal of this project was to innovate upon the original design by developing new, responsive formations for soccer robots, which adapt to the ongoing state of the game and implementing a custom goalkeeper. Furthermore, we've also implemented other unique roles, behaviours, animations strategies and architecture changes.
 
-This software is released under the GPL. See file [gpl.txt](gpl.txt)
- for more information.
-If you use this software please acknowledge it appropriately.
+## Goalkeeper
+The goalkeeper role has been specifically designed to guard the goalpost. Our implementation features strategies to maximize coverage of the goalpost.
+One of the primary responsibilities of a goalkeeper is to position themselves correctly in relation to the game ball and their own goal. By doing so, they create a defensive barrier that makes it difficult for the opposing team to score. This positioning is determined by calculating a line between the ball and our goal, and then selecting a point on this line where the goalkeeper should stand.  
+The chosen point on the line should be close to the goal to ensure its protection. However, it is also important that the point is not too close to the goal, as this could lead to collisions between the goalkeeper and the goal structure. Such collisions can result in falling over and get stuck and will compromise the goalkeeper's ability to defend the goal effectively.
 
-A tutorial is available on YouTube describing the basics of working with the magmaOffenburg source code:
-https://www.youtube.com/watch?v=_FNaMjJlNfI
+## Responsive Formation
+The dynamically adapting formation, which is based on the concept of "shifting", is a tactic commonly used in professional football. Shifting refers to the movement of individual players as well as the collective unit with the aim of either reducing space around the ball or closing gaps in the defensive line. The concept of shifting formation revolves around the idea of maintaining a compact defensive structure while simultaneously preventing the opposition from exploiting any weaknesses. This is achieved by constantly adjusting the position of the players in relation to the position of the ball to ensure optimal coverage of key areas on the pitch.  
+> "Shifting is the movement of the individual as well as the collective, which has the aim of either reducing the space to the ball or closing holes in one's own defensive formation." -[spielverlagerung.de](https://spielverlagerung.de/verschieben/) (translated)
 
-## Setup Instructions
+### Simplified Implementation Process
+The following simplified process outlines the approximate sequence of position calculation. The detailed process can be found in the code.
 
-Clone the repository into a workspace folder of your choice.
-
-```bash
-git clone <address from github>
+During the initialization of the players, each one is assigned an individual offset. This offset describes the formation position that each player should take relative to the ball. For example, the left sided defender should always be positioned significantly behind the ball and a little bid left of it during the match.   
+```
+Vector3D offsetLeftDefender = new Vector3D(-5, 2, 0);
+// -5 units on x-axis for staying behind the ball
+// 2 units on y-axis for staying left of the ball
 ```
 
-
-### Eclipse
-#### Import Project
-1. Open Eclipse using the workspace folder (not the RoboCup3D folder but the one above).
-1. In Project Explorer View right click -> Import... -> Choose Maven -> Existing Maven Projects... Next
-1. Select RoboCup3D as Root Directory
-1. Check that all projects are selected -> Finish.
-1. (optional) In Project Explorer View (not the package explorer!) click on View Menu (triangle) -> Choose Projects Presentation -> hierarchical
-
-#### Start Single Player
-First make sure that an instance of rcssserver3d is running on your local machine.
-There is already an existing launch target:
-
-1. Chose Menu->Run::RunConfigurations...
-1. Select Java Application->RoboCup Client (8)
-1. Press Run Button
-
-To change the player or robot type, adjust the command line parameters:
-  --playerid=8 --factory=NaoToe
-  For a list of all command line parameters see class `RoboCupClient`.
-
-#### Deploy Team
-Make a deployment:
-
-1. Chose Menu->Run::RunConfigurations...
-1. Select Maven Build->Package magmaagent
-1. Press Run Button
-
-This will create a folder target/magmaagent. Copy the folder with subfolders to the server you want to run your team.
-
-### IntelliJ
-#### Import Project
-1. Start IntelliJ to get to the welcome screen
-1. (optional) If a project is already open: Chose "File" -> "Close Project"
-1. In the welcome screen select "Open" in the "Project" category
-1. Select the RoboCup3D folder, press "OK" and then wait a few seconds for IntelliJ to initialize the project
-
-#### Start Single Player
-First make sure that an instance of rcssserver3d is running on your local machine.
-1. Chose "Run" -> "Edit Configurations..."
-1. Press the plus button ("Add New Configuration") -> select "Application"
-1. Chose a fitting name for the launch configuration, for example "RoboCupClient"
-1. (optional) For newer IntelliJ versions: Press "Modify options" -> unselect in the category "Java" -> "Use classpath of module"
-1. Select your JDK in the module dropdown
-1. Chose "magma.robots.RoboCupClient" as the main class
-1. Use the following as "program arguments" -> --playerid=8 --factory=NaoToe
-1. Press "OK" and then press the green run button
-
-For a list of all command line parameters ("program arguments") see class `RoboCupClient`.
-
-#### Deploy Team
-1. Press "File" -> "Settings..." -> "Build, Execution, Deployment" -> "Build Tools" -> "Maven" -> "Runner" -> Make sure "Delegate IDE build/run actions to Maven" is selected
-1. Press "OK" and then press the green build button
-
-This will create the target folder for magmaagent (full path RoboCup3D/magmaagent/target/magmaagent). Copy the folder with subfolders to the server you want to run your team.
-
-### Command Line
-
-Building the entire project:
-
-```bash
-./mvnw package
+On the other hand, the striker should generally position themselves in front of the ball to take an offensive position.  
+```
+Vector3D offsetRightAttacker = new Vector3D(4, -2.5, 0);
+// 4 units on x-axis for staying in front of the ball
+// -2.5 units on y-axis for staying right of the ball
 ```
 
-Building only the agent module along with its dependencies:
-
-```bash
-./mvnw package -pl magmaagent -am
+The actual position on the playing field is calculated as follows: Ball position + Offset.  
+This means that the player moves towards the ball position, which is modified individually by the offset.
+```
+Vector3D ballPosition = worldModel.getBall().getPosition()
+Vector3D targetPosition = ballPosition.add(offset);
 ```
 
-## Start team
+Afterwards, it will be checked whether the target position is still within the two goals.
+```
+Vector3D targetPosition2 = targetPosition;
 
-```bash
-cd magmaagent/target/magmaagent
-bash start.sh <serverIP>
+if (targetPosition.getX() >= enemyGoalPosition.getX()){
+			targetPosition = new Vector3D(targetPosition2.getX()-3,targetPosition2.getY(),0);
+}
+if (targetPosition.getX() <= ownGoalPosition.getX()){
+			targetPosition = new Vector3D(targetPosition2.getX()+3,targetPosition2.getY(),0);
+}
 ```
 
-### Main class
-
-```java
-// magmaagent module
-magma.robots.RoboCupClient
+After the final calculation, the player is assigned to his new position.
+```
+WalkToPosition walkToPosition = (WalkToPosition) behaviors.get(IBehaviorConstants.WALK_TO_POSITION);
+Pose2D newPose = new Pose2D(playerTargetPosition);
+return walkToPosition.setPosition(
+       new PoseSpeed2D(newPose, Vector2D.ZERO), 90, false, true, 0.8, IKDynamicWalkMovement.NAME_LOW_ACC);
 ```
 
-## Further Information
-
-### Architecture
-
-First level architecture:
-
- ![](base/uml/images/Architecture_Firstlevel.jpg)
-
-Second level architecture:
-
- ![](base/uml/images/Architecture_Secondlevel.jpg)
-
-
-### Magma Team URL
-
-[http://robocup.hs-offenburg.de](http://robocup.hs-offenburg.de)
-
-### Authors
-Ester Amelia, Maximilian Baritz, Martin Baur, Nico Bohlinger, Hannes Braun, Kim Christmann, Alexander Derr, 
-Klaus Dorer, Mathias Ehret, Sebastian Eppinger, Jens Fischer, 
-Camilo Gelvez, Stefan Glaser, Stefan Grossmann, Marcel Gruessinger, Julian Hohenoecker, Danny Huber, Thomas Huber, 
-Stephan Kammerer, Fabian Korak, Maximilian Kroeg, Pascal Liegibel, Duy Nguyen, 
-Simon Raffeiner, Srinivasa Ragavan, Thomas Rinklin, Bjoern Ritter, 
-Mahdi Sadeghi, Joachim Schilling, Rico Schillings, Ingo Schindler, Carmen Schmider, Frederik Sdun, Jannik Seiler, Rajit Shahi, 
-Bjoern Weiler, David Weiler, David Zimmermann, Denis Zimmermann
-
-### Contact
-
-klaus dot dorer at hs-offenburg dot de
+It is important to note that players are not naturally bound to this position. They should only return to this optimized position if they do not have any other commands. Therefore, it is also declared as PassivePositioning and included in the Move Sequence. Other actions such as going to the ball and shooting take priority.
+```
+protected transient List<Supplier<String>> behaviorSuppliers =
+    new ArrayList<>(Arrays.asList(this::calibrateCamera, this::performSay, this::beamHome,
+        this::sendPassCommand, this::getUp, this::reactToGameEnd, this::performFocusBall, this::getReady,
+        this::waitForGameStart, this::waitForOpponentActions, this::searchBall, this::move));
+```
+![RoboCupLogo](https://github.com/georghauschild/Robot-Football-Simulation/assets/37111215/e825a8ce-2fa1-4eed-993f-b30c3988bbf4)
